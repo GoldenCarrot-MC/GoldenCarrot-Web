@@ -11,6 +11,7 @@ import team.kitemc.verifymc.db.UserDao;
 import team.kitemc.verifymc.service.AuthmeService;
 import team.kitemc.verifymc.util.PasswordUtil;
 import team.kitemc.verifymc.web.ApiResponseFactory;
+import team.kitemc.verifymc.web.ClientIpResolver;
 import team.kitemc.verifymc.web.WebAuthHelper;
 import team.kitemc.verifymc.web.WebResponseHelper;
 
@@ -25,6 +26,7 @@ public class LoginHandler implements HttpHandler {
 
     private final PluginContext ctx;
     private final boolean isAdminLogin;
+    private final ClientIpResolver clientIpResolver;
     private final ConcurrentHashMap<String, LoginAttempt> loginAttempts = new ConcurrentHashMap<>();
 
     private static class LoginAttempt {
@@ -39,6 +41,7 @@ public class LoginHandler implements HttpHandler {
     public LoginHandler(PluginContext ctx, boolean isAdminLogin) {
         this.ctx = ctx;
         this.isAdminLogin = isAdminLogin;
+        this.clientIpResolver = new ClientIpResolver(ctx.getConfigManager());
     }
 
     private boolean isRateLimited(String ip) {
@@ -60,7 +63,7 @@ public class LoginHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         if (!WebResponseHelper.requireMethod(exchange, "POST")) return;
 
-        String clientIp = exchange.getRemoteAddress().getAddress().getHostAddress();
+        String clientIp = clientIpResolver.resolve(exchange);
         if (isRateLimited(clientIp)) {
             ctx.getPlugin().getLogger().warning("[Security] Login rate limit exceeded for IP: " + clientIp);
             WebResponseHelper.sendJson(exchange, ApiResponseFactory.failure(

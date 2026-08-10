@@ -60,6 +60,9 @@ public class ReviewWebSocketServer extends WebSocketServer {
 
     @Override
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
+        // Java-WebSocket exposes the socket peer through WebSocket, but does not provide
+        // an HttpExchange-compatible request address here. Keep the existing peer logging
+        // and authentication flow; proxy IP resolution is intentionally limited to HTTP handlers.
         debugLog("WebSocket connection opened: " + conn.getRemoteSocketAddress());
 
         // Check max clients limit
@@ -165,4 +168,4 @@ public class ReviewWebSocketServer extends WebSocketServer {
             debugLog("Message sent to " + sentCount + " clients");
         }
     }
-} 
+}

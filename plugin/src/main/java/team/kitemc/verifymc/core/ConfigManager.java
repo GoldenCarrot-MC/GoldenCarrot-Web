@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
+import team.kitemc.verifymc.web.ClientIpResolver;
 
 /**
  * Type-safe configuration access, eliminating scattered getConfig().getString(...)
@@ -69,6 +70,11 @@ public class ConfigManager {
             }
         }
 
+        // Validate proxy settings once during startup and keep proxy trust disabled by default.
+        isProxyEnabled();
+        getClientIpHeader();
+        getTrustedProxies();
+
         plugin.getLogger().log(Level.INFO, "Configuration validated successfully");
     }
 
@@ -78,6 +84,7 @@ public class ConfigManager {
 
     public void reloadConfig() {
         plugin.reloadConfig();
+        validateConfig();
     }
 
     // --- General config ---
@@ -106,6 +113,57 @@ public class ConfigManager {
 
     public String getWebServerPrefix() {
         return getConfig().getString("web_server_prefix", "[VerifyMC]");
+    }
+
+    // --- Reverse proxy ---
+    public boolean isProxyEnabled() {
+        return getConfig().getBoolean("proxy.enabled", false);
+    }
+
+    public String getClientIpHeader() {
+        String header = getConfig().getString("proxy.client_ip_header", "X-Forwarded-For");
+        if (header == null || header.trim().isEmpty()) {
+            plugin.getLogger().warning("Invalid proxy.client_ip_header: empty value. Using X-Forwarded-For.");
+            return "X-Forwarded-For";
+        }
+        String normalized = header.trim();
+        if (!normalized.equalsIgnoreCase("X-Forwarded-For")
+                && !normalized.equalsIgnoreCase("X-Real-IP")
+                && !normalized.equalsIgnoreCase("CF-Connecting-IP")
+                && !normalized.equalsIgnoreCase("True-Client-IP")) {
+            plugin.getLogger().warning("Unsupported proxy.client_ip_header: " + normalized
+                    + ". Using X-Forwarded-For.");
+            return "X-Forwarded-For";
+        }
+        return normalized;
+    }
+
+    public List<String> getTrustedProxies() {
+        List<String> configured;
+        try {
+            configured = getConfig().getStringList("proxy.trusted_proxies");
+        } catch (Exception e) {
+            plugin.getLogger().warning("Invalid proxy.trusted_proxies configuration. Ignoring all entries.");
+            return java.util.Collections.emptyList();
+        }
+        if (configured == null || configured.isEmpty()) {
+            if (isProxyEnabled()) {
+                plugin.getLogger().warning("proxy.enabled=true but proxy.trusted_proxies is empty; forwarded IP headers will be ignored.");
+            }
+            return java.util.Collections.emptyList();
+        }
+        java.util.ArrayList<String> valid = new java.util.ArrayList<>();
+        for (String value : configured) {
+            if (value == null || value.trim().isEmpty() || !ClientIpResolver.isValidNetwork(value)) {
+                plugin.getLogger().warning("Ignoring invalid proxy.trusted_proxies entry: " + value);
+                continue;
+            }
+            valid.add(value.trim());
+        }
+        if (valid.isEmpty() && isProxyEnabled()) {
+            plugin.getLogger().warning("proxy.enabled=true but no valid proxy.trusted_proxies entries were found; forwarded IP headers will be ignored.");
+        }
+        return java.util.Collections.unmodifiableList(valid);
     }
 
     // --- Frontend ---

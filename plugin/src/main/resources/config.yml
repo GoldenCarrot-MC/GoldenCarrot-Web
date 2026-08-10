@@ -3,6 +3,14 @@ debug: false
 web_port: 8080
 ws_port: 8081
 web_server_prefix: '[ Name ]'
+# CDN/反向代理由管理员在 CDN 控制台配置源站公网 IP、回源端口和证书；插件仍监听本机 web_port。
+# 域名按 CDN 服务商要求解析到 CDN，web_register_url 填写用户访问的公网域名。
+# 若 CDN 不支持 WebSocket，请单独配置 WebSocket 回源或关闭相关功能；建议防火墙仅允许 CDN 回源 IP 访问 web_port。
+proxy:
+  enabled: false
+  client_ip_header: X-Forwarded-For
+  # 仅填写可信 CDN/反向代理 IP/CIDR，禁止 0.0.0.0/0。
+  trusted_proxies: []
 auth_methods:
   - email
 max_accounts_per_email: 2

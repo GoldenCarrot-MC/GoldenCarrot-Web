@@ -16,6 +16,18 @@ ws_port: 8081
 # 显示在网页界面上的服务器名称。
 web_server_prefix: '[ Name ]'
 
+# CDN/反向代理支持，默认关闭。仅在 WebServer 位于可信代理之后时启用。
+proxy:
+  enabled: false
+  # 支持：X-Forwarded-For、X-Real-IP、CF-Connecting-IP、True-Client-IP
+  client_ip_header: X-Forwarded-For
+  # 仅填写可信 CDN/反向代理的 IP 或 CIDR，禁止使用 0.0.0.0/0。
+  trusted_proxies: []
+# 请在 CDN 控制台填写源站公网 IP 和 web_port 回源端口，并按服务商要求将域名解析到 CDN。
+# web_register_url 应填写用户访问的公网域名，不要填写源站 IP 或 CDN 节点 IP。
+# 若 CDN 不支持 WebSocket，请单独配置 WebSocket 回源或关闭相关功能。
+# 建议源站防火墙只允许 CDN 回源 IP 访问 web_port，避免绕过 CDN 直接访问源站。
+
 # ----------------------------------------
 # 验证与白名单
 # ----------------------------------------
