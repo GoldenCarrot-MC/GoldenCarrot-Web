@@ -95,11 +95,4 @@ mvn clean package
 
 ---
 
-## 💬 官方社区
-
-- **QQ 群**: 1041540576 ([点击加入](https://qm.qq.com/q/F7zuhZ7Mze))
-- **Discord**: [https://discord.gg/TCn9v88V](https://discord.gg/TCn9v88V)
-
----
-
 > ❤️ 如果你喜欢本项目，欢迎 Star、分享与反馈！
