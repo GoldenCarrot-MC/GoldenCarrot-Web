@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full max-w-xl flex flex-col items-center">
+  <div class="registration-form w-full max-w-xl flex flex-col items-center">
     <div class="relative w-full max-w-md mb-6">
         <div class="flex items-center justify-center gap-2 text-xs md:text-sm">
           <div class="font-medium transition-colors" :class="currentStep === 'basic' ? 'text-blue-200' : 'text-white/60'">1. {{ $t('register.steps.basic') }}</div>
@@ -501,3 +501,49 @@ const handleSubmit = async () => {
   }
 }
 </script>
+
+<style scoped>
+.registration-form { color: #f2f3e9; letter-spacing: 0; }
+.registration-form :deep(label) { color: #dfe3d5; font-size: 12px; }
+.registration-form :deep(.glass-input) {
+  min-height: 44px;
+  padding: 10px 13px;
+  color: #f2f3e9;
+  border: 1px solid #3f4a3b;
+  border-radius: 4px;
+  background: #080908;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.registration-form :deep(.glass-input::placeholder) { color: #687164; }
+.registration-form :deep(.glass-input:focus) { border-color: #c9df67; box-shadow: 0 0 0 3px rgba(201, 223, 103, .12); }
+.registration-form :deep(.glass-button),
+.registration-form :deep(.glass-button-primary) {
+  min-height: 44px;
+  color: #e6e9dd;
+  border: 1px solid #4a5744;
+  border-radius: 4px;
+  background: #0d0f0d;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transform: none;
+}
+.registration-form :deep(.glass-button:hover) { color: #f5f7ec; border-color: #70862c; background: #12150f; transform: none; }
+.registration-form :deep(.glass-button-primary) { color: #12170d; border-color: #c9df67; background: #c9df67; }
+.registration-form :deep(.glass-button-primary:hover) { color: #12170d; border-color: #deee87; background: #deee87; }
+.registration-form :deep(.glass-card) { border: 1px solid #303430; border-radius: 2px; background: #0b0d0b; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+.registration-form :deep(.text-blue-200), .registration-form :deep(.text-blue-400) { color: #c9df67; }
+.registration-form :deep(.border-blue-500\/50) { border-color: #70864c; }
+.registration-form :deep(.bg-blue-500\/10) { background: rgba(112, 134, 76, .14); }
+.registration-form :deep(input[type='radio']), .registration-form :deep(input[type='checkbox']) { accent-color: #c9df67; }
+.registration-form :deep(textarea) { border-radius: 4px; }
+.registration-form :deep(.rounded-lg) { border-radius: 4px; }
+.registration-form :deep(.animate-spin) { border-color: #c9df67; border-top-color: transparent; }
+@media (max-width: 560px) {
+  .registration-form :deep(.lg\:hidden) { display: none; }
+  .registration-form :deep(.p-6) { padding: 18px; }
+  .registration-form :deep(.pl-6) { padding-left: 0; }
+}
+</style>

@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <!-- Top Navigation -->
-    <TopNavigation />
+    <TopNavigation v-if="!isImmersivePage" />
 
     <!-- Main Content with top padding for navigation -->
-    <div class="pt-16 pb-safe relative z-10">
+    <div :class="[isImmersivePage ? '' : 'pt-16 pb-safe', 'relative z-10']">
       <router-view />
     </div>
 
@@ -12,12 +12,12 @@
     <NotificationSystem ref="notificationSystemRef" />
 
     <!-- Enhanced Footer -->
-    <AppFooter />
+    <AppFooter v-if="!isImmersivePage" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { inject, watch, ref, onMounted, type Ref } from 'vue'
+import { computed, inject, watch, ref, onMounted, type Ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useNotification } from '@/composables/useNotification'
@@ -40,6 +40,7 @@ onMounted(() => {
 
 const route = useRoute()
 const { t, locale } = useI18n()
+const isImmersivePage = computed(() => route.name === 'Home' || route.name === 'Register')
 
 // Update document title
 watch(

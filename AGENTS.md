@@ -3,20 +3,29 @@
 ## Project Structure & Module Organization
 - `plugin/`: Main Bukkit/Spigot/Paper/Folia plugin (Java 17), including web API handlers and bundled static web assets under `src/main/resources`.
 - `plugin-proxy/`: Proxy-side plugin for Waterfall/Bungee/Velocity.
-- `frontend/glassx/`: Vue 3 + TypeScript + Vite admin/user web UI.
+- `frontend/frontend/`: React 18 + TypeScript + Vite Golden Carrot public website and community UI. This is the target frontend for GoldenCarrot-Web website changes and performance work.
+- `frontend/glassx/`: Separate Vue 3 + TypeScript + Vite VerifyMC UI. Do not modify it for Golden Carrot website tasks unless explicitly requested.
 - `docs/` and `docs/zh/`: screenshots and documentation assets.
 - Root metadata: `version.yml` (release/version source), `release_notes_zh.md`, and GitHub workflow in `.github/workflows/plugin.yml`.
 
 ## Build, Test, and Development Commands
-- Frontend dev server:
+- Golden Carrot frontend (default website target):
+  ```bash
+  cd frontend/frontend && npm ci && npm run dev
+  ```
+- VerifyMC frontend dev server:
   ```bash
   cd frontend/glassx && npm ci && npm run dev
   ```
-- Frontend production build:
+- Golden Carrot frontend production build:
+  ```bash
+  cd frontend/frontend && npm run build
+  ```
+- VerifyMC frontend production build:
   ```bash
   cd frontend/glassx && npm run build
   ```
-- Frontend quality checks:
+- VerifyMC frontend quality checks:
   ```bash
   cd frontend/glassx && npm run lint && npm run type-check && npm run test
   ```

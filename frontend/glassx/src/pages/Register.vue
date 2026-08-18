@@ -1,45 +1,51 @@
 <template>
-  <div class="relative min-h-screen w-full">
-    <div class="relative z-10 min-h-screen flex flex-col lg:flex-row">
-      <!-- Left: Branding -->
-      <div class="hidden lg:flex lg:w-2/5 flex-shrink-0 flex-col justify-center px-12 xl:px-16">
-        <div class="space-y-6">
-          <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-white/5 border border-white/10">
-            <svg class="w-7 h-7 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
-            </svg>
-          </div>
-          <h1 class="text-4xl xl:text-5xl font-bold text-white tracking-tight leading-tight">
-            {{ $t('register.title') }}
-          </h1>
-          <p class="text-white/50 text-base leading-relaxed max-w-sm">
-            {{ $t('register.subtitle') }}
-          </p>
-          <div class="pt-4 space-y-3">
-            <div class="flex items-center gap-3 text-white/40 text-sm">
-              <svg class="w-4 h-4 text-white/30 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-              <span>{{ $t('register.features.secure') }}</span>
-            </div>
-            <div class="flex items-center gap-3 text-white/40 text-sm">
-              <svg class="w-4 h-4 text-white/30 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-              <span>{{ $t('register.features.fast') }}</span>
-            </div>
-            <div class="flex items-center gap-3 text-white/40 text-sm">
-              <svg class="w-4 h-4 text-white/30 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-              <span>{{ $t('register.features.privacy') }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
+  <main class="register-page">
+    <header class="register-header">
+      <RouterLink class="brand" to="/">
+        <span class="brand-mark"><Carrot :size="18" /></span>
+        <span>Golden Carrot</span>
+      </RouterLink>
+      <RouterLink class="back-link" to="/"><ArrowLeft :size="16" />返回官网</RouterLink>
+    </header>
 
-      <!-- Right: Form -->
-      <div class="flex-1 flex items-center justify-center p-4 md:p-6 lg:p-10">
+    <div class="register-layout">
+      <section class="register-intro">
+        <p>WHITELIST / APPLICATION</p>
+        <h1>申请加入<br />Golden Carrot</h1>
+        <span>我们想认识认真对待长期生存的玩家，也让你确认这里是否适合自己。</span>
+        <ol>
+          <li><ShieldCheck :size="19" /><div><strong>按配置验证</strong><small>邮箱、验证码与问卷会按服务器设置出现</small></div></li>
+          <li><FileText :size="19" /><div><strong>人工阅读</strong><small>每一份申请都会被认真对待</small></div></li>
+          <li><Sprout :size="19" /><div><strong>从零开始</strong><small>没有商城与数值捷径，只有纯生存</small></div></li>
+        </ol>
+      </section>
+      <section class="register-form-panel" aria-label="白名单申请表单">
         <RegistrationForm />
-      </div>
+      </section>
     </div>
-  </div>
+  </main>
 </template>
 
 <script setup lang="ts">
+import { ArrowLeft, Carrot, FileText, ShieldCheck, Sprout } from 'lucide-vue-next'
+import { RouterLink } from 'vue-router'
 import RegistrationForm from '@/components/RegistrationForm.vue'
 </script>
+
+<style scoped>
+:global(body:has(.register-page)) { background: #050505; background-image: none; }
+.register-page { min-height: 100vh; color: #f2f3e9; background: #050505; font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif; letter-spacing: 0; }
+.register-page * { box-sizing: border-box; }
+.register-header { width: min(100%, 1700px); height: 72px; margin: auto; padding: 0 clamp(22px, 4vw, 72px); display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #2b3328; }
+.brand, .back-link { display: inline-flex; align-items: center; gap: 10px; color: #f2f3e9; text-decoration: none; font-size: 14px; font-weight: 750; }
+.brand-mark { width: 34px; height: 34px; display: grid; place-items: center; color: #ff9d32; border: 1px solid #3d423d; border-radius: 2px; background: #0b0d0b; }
+.back-link { min-height: 42px; color: #a7ad9d; font-size: 12px; }.back-link:hover { color: #c9df67; }
+.register-layout { width: min(100%, 1440px); min-height: calc(100vh - 72px); margin: auto; padding: 72px clamp(22px, 5vw, 82px); display: grid; grid-template-columns: .72fr 1.28fr; gap: clamp(60px, 10vw, 150px); align-items: start; }
+.register-intro { position: sticky; top: 130px; }.register-intro > p { margin: 0; color: #c9df67; font: 750 10px ui-monospace, monospace; letter-spacing: .08em; }.register-intro h1 { margin: 20px 0 20px; font-size: 48px; line-height: 1.12; letter-spacing: 0; }.register-intro > span { max-width: 430px; display: block; color: #a7ad9d; font-size: 14px; line-height: 1.8; }
+.register-intro ol { margin: 44px 0 0; padding: 0; list-style: none; border-top: 1px solid #313b2e; }.register-intro li { padding: 18px 0; display: flex; gap: 13px; border-bottom: 1px solid #313b2e; }.register-intro li > svg { color: #ee9b38; }.register-intro strong, .register-intro small { display: block; }.register-intro strong { font-size: 13px; }.register-intro small { margin-top: 5px; color: #737c6e; font-size: 11px; line-height: 1.5; }
+.register-form-panel { min-width: 0; padding: 36px; border: 1px solid #292c29; border-radius: 2px; background: #090a09; }
+:deep(.register-form-panel .glass-card), :deep(.register-form-panel .glass-input) { backdrop-filter: none; -webkit-backdrop-filter: none; }
+:deep(.register-form-panel .glass-card) { border-radius: 4px; box-shadow: none; }
+@media (max-width: 860px) { .register-layout { grid-template-columns: 1fr; gap: 48px; padding-top: 48px; }.register-intro { position: static; }.register-intro ol { display: none; } }
+@media (max-width: 560px) { .register-header { height: 64px; padding-inline: 18px; }.register-layout { min-height: calc(100vh - 64px); padding: 34px 16px 50px; }.register-intro h1 { font-size: 36px; }.register-form-panel { padding: 22px 14px; } }
+</style>

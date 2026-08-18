@@ -1,0 +1,342 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Inter', sans-serif;
+  color-scheme: dark;
+  background: #050708;
+  --surface-base: #050708;
+  --surface-raised: #0b0f0e;
+  --surface-panel: #101513;
+  --line-subtle: rgba(255, 255, 255, 0.1);
+  --accent: #d9ff72;
+  --accent-soft: rgba(217, 255, 114, 0.12);
+  --mint: #86d9c8;
+}
+
+@layer utilities {
+  .animate-marquee {
+    animation: marquee 40s linear infinite;
+  }
+  .animate-marquee-reverse {
+    animation: marquee-reverse 40s linear infinite;
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-reverse {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-black text-slate-200 antialiased;
+    margin: 0;
+    background: var(--surface-base);
+  }
+
+  ::selection {
+    background: rgba(217, 255, 114, 0.28);
+    color: white;
+  }
+
+  :focus-visible {
+    outline: 2px solid rgba(217, 255, 114, 0.75);
+    outline-offset: 3px;
+  }
+}
+
+@keyframes blurFadeUp {
+  from { opacity: 0; filter: blur(20px); transform: translateY(40px); }
+  to { opacity: 1; filter: blur(0); transform: translateY(0); }
+}
+
+@layer utilities {
+  .animate-blur-fade-up {
+    animation: blurFadeUp 1s ease-out forwards;
+    opacity: 0;
+  }
+
+  .liquid-glass {
+    position: relative;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.035);
+    background-blend-mode: luminosity;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  }
+
+  .liquid-glass::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgba(255,255,255,0.45), rgba(255,255,255,0.12) 22%, transparent 42%, transparent 58%, rgba(255,255,255,0.12) 80%, rgba(255,255,255,0.35));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  .cinematic-blur {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    mask-image: linear-gradient(to top, black 0%, transparent 45%);
+    -webkit-mask-image: linear-gradient(to top, black 0%, transparent 45%);
+  }
+
+  .cinematic-vignette {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: radial-gradient(circle at 55% 42%, transparent 0%, rgba(5, 7, 8, 0.08) 40%, rgba(5, 7, 8, 0.8) 100%);
+  }
+
+  .hero-world-image {
+    object-position: center center;
+    filter: saturate(0.88) contrast(0.96);
+  }
+
+  .hero-world-shade {
+    background:
+      linear-gradient(90deg, rgba(5, 7, 8, 0.94) 0%, rgba(5, 7, 8, 0.72) 28%, rgba(5, 7, 8, 0.18) 66%, rgba(5, 7, 8, 0.32) 100%),
+      linear-gradient(0deg, rgba(5, 7, 8, 0.78) 0%, rgba(5, 7, 8, 0.08) 44%, rgba(5, 7, 8, 0.28) 100%);
+  }
+
+  .hero-world-scanlines {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    background-size: 100% 4px;
+    opacity: 0.22;
+  }
+
+  @media (max-width: 640px) {
+    .hero-world-image { object-position: 68% center; }
+    .hero-world-shade {
+      background:
+        linear-gradient(90deg, rgba(5, 7, 8, 0.82) 0%, rgba(5, 7, 8, 0.42) 62%, rgba(5, 7, 8, 0.3) 100%),
+        linear-gradient(0deg, rgba(5, 7, 8, 0.84) 0%, rgba(5, 7, 8, 0.08) 48%, rgba(5, 7, 8, 0.3) 100%);
+    }
+  }
+
+  /* Bridge older page surfaces onto the shared charcoal palette. */
+  .bg-slate-950 { background-color: #070908; }
+  .bg-slate-900 { background-color: #101513; }
+  .bg-slate-800 { background-color: #151b19; }
+  .border-slate-700 { border-color: #2a3431; }
+  .bg-\[\#12121a\] { background-color: #0b0f0e; }
+  .bg-\[\#0a0a0f\] { background-color: #050708; }
+  .bg-\[\#1a1c23\] { background-color: #101513; }
+  .border-\[\#1e1e2e\] { border-color: #202725; }
+  .border-\[\#2e2e3e\] { border-color: #2a3431; }
+}
+
+@layer utilities {
+  .glass-panel {
+    @apply backdrop-blur-md border border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.18)];
+    background: rgba(11, 15, 14, 0.72);
+  }
+  
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  
+  .perspective-\[1000px\] {
+    perspective: 1000px;
+  }
+}
+
+.auth-visual {
+  isolation: isolate;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.78) 0%, transparent 38%),
+    conic-gradient(from 220deg at 68% 36%, #efffcd 0deg, #86d9c8 88deg, #d9ff72 175deg, #f4f8ed 255deg, #72cdbd 360deg);
+}
+
+.auth-visual::before {
+  content: '';
+  position: absolute;
+  inset: -18%;
+  z-index: 1;
+  background-image: radial-gradient(circle, rgba(7, 16, 13, 0.42) 0 1px, transparent 1.4px);
+  background-size: 7px 7px;
+  mask-image: linear-gradient(132deg, transparent 8%, black 27%, black 72%, transparent 94%);
+  transform: rotate(-7deg) scale(1.08);
+  opacity: 0.72;
+}
+
+.auth-visual::after {
+  content: '';
+  position: absolute;
+  inset: 15% -38% -34% 8%;
+  z-index: 0;
+  border: 92px solid rgba(248, 252, 242, 0.58);
+  border-radius: 44%;
+  transform: rotate(-18deg);
+  box-shadow: 0 0 0 34px rgba(134, 217, 200, 0.18);
+}
+
+.auth-visual__mesh {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(115deg, transparent 32%, rgba(255, 255, 255, 0.4) 49%, transparent 63%),
+    repeating-linear-gradient(166deg, transparent 0 22px, rgba(7, 16, 13, 0.055) 23px 24px);
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+
+@media (max-width: 1023px) {
+  .auth-visual::before {
+    inset: -80% -10%;
+    background-size: 6px 6px;
+  }
+
+  .auth-visual::after {
+    inset: -105% -10% -120% 30%;
+  }
+}
+
+.mc-physics-block {
+    position: absolute;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    border: 4px solid rgba(0, 0, 0, 0.58);
+    border-radius: 6px;
+    opacity: 0;
+    box-shadow:
+      inset 0 4px 0 rgba(255, 255, 255, 0.18),
+      inset -8px -8px 0 rgba(0, 0, 0, 0.18),
+      0 10px 0 rgba(0, 0, 0, 0.34),
+      0 18px 26px rgba(0, 0, 0, 0.28);
+    image-rendering: pixelated;
+    pointer-events: none;
+    user-select: none;
+    will-change: transform;
+}
+
+.mc-physics-block__texture {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(90deg, rgba(255,255,255,0.18) 25%, transparent 25% 50%, rgba(0,0,0,0.14) 50% 75%, transparent 75%),
+      linear-gradient(rgba(0,0,0,0.1) 25%, transparent 25% 50%, rgba(255,255,255,0.08) 50% 75%, transparent 75%);
+    background-size: 24px 24px;
+    mix-blend-mode: soft-light;
+    opacity: 0.72;
+    pointer-events: none;
+}
+
+.mc-physics-block--grass {
+    border-color: #26371d;
+    background: linear-gradient(to bottom, #7db84a 0 25%, #568331 25% 33%, #72513a 33% 100%);
+}
+
+.mc-physics-block--grass::after {
+    content: '';
+    position: absolute;
+    inset: 32% 0 0;
+    background-image: radial-gradient(#3e7a2d 0 3px, transparent 4px), radial-gradient(#9b6d4c 0 3px, transparent 4px);
+    background-position: 8px 12px, 22px 28px;
+    background-size: 34px 38px;
+    opacity: 0.58;
+}
+
+.mc-physics-block--tnt {
+    border-color: #4a1916;
+    background: linear-gradient(to bottom, #bb3e31 0 32%, #e8dfbd 32% 66%, #9f3029 66% 100%);
+}
+
+.mc-physics-block__tnt {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 2;
+    transform: translate(-50%, -50%);
+    color: #211b18;
+    font-family: monospace;
+    font-size: clamp(1rem, 3vw, 1.8rem);
+    font-weight: 900;
+    letter-spacing: 0;
+    text-shadow: 2px 0 #211b18;
+}
+
+.mc-physics-block--diamond {
+    border-color: #303a39;
+    background-color: #77817e;
+    background-image:
+      linear-gradient(45deg, transparent 40%, #5de1d3 40% 59%, transparent 59%),
+      linear-gradient(-45deg, transparent 40%, #2ba99e 40% 59%, transparent 59%);
+    background-position: 6px 4px, 26px 25px;
+    background-size: 46px 46px, 52px 52px;
+}
+
+.mc-physics-block--gold {
+    border-color: #5d4610;
+    background-color: #d7ad29;
+    background-image:
+      linear-gradient(90deg, rgba(255,235,103,0.42) 3px, transparent 3px),
+      linear-gradient(rgba(255,235,103,0.42) 3px, transparent 3px);
+    background-size: 28px 28px;
+}
+
+.mc-physics-block--redstone {
+    border-color: #481712;
+    background-color: #9f2924;
+    background-image:
+      linear-gradient(45deg, rgba(255,92,60,0.5) 25%, transparent 25% 75%, rgba(87,10,12,0.38) 75%),
+      linear-gradient(-45deg, rgba(128,16,17,0.42) 25%, transparent 25% 75%, rgba(255,113,70,0.32) 75%);
+    background-size: 34px 34px;
+}
+
+.mc-physics-block--crafting {
+    border-color: #362416;
+    background-color: #81552f;
+    background-image:
+      linear-gradient(90deg, transparent 46%, #3b281b 46% 54%, transparent 54%),
+      linear-gradient(transparent 46%, #3b281b 46% 54%, transparent 54%),
+      linear-gradient(45deg, rgba(216,168,91,0.34) 25%, transparent 25% 75%, rgba(49,29,17,0.24) 75%);
+    background-size: 44px 44px, 44px 44px, 22px 22px;
+}
+
+.mc-physics-block--obsidian {
+    border-color: #191321;
+    background-color: #292137;
+    background-image:
+      linear-gradient(135deg, rgba(109,72,139,0.55) 12%, transparent 12% 42%, rgba(9,7,15,0.5) 42% 58%, transparent 58%),
+      linear-gradient(45deg, transparent 24%, rgba(72,48,94,0.48) 24% 38%, transparent 38% 72%, rgba(14,10,21,0.5) 72%);
+    background-size: 42px 42px, 34px 34px;
+}
+
+@media (max-width: 639px) {
+    .mc-physics-block {
+      border-width: 3px;
+      box-shadow:
+        inset 0 3px 0 rgba(255, 255, 255, 0.16),
+        inset -6px -6px 0 rgba(0, 0, 0, 0.18),
+        0 7px 0 rgba(0, 0, 0, 0.32),
+        0 13px 20px rgba(0, 0, 0, 0.24);
+    }
+}
